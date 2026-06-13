@@ -48,15 +48,21 @@ Después cena
 </button>
 
 </div>
-
 <h2>Historial</h2>
 
 <div id="records"></div>
 
-<button onclick="exportCSV()" class="export">
-Exportar CSV
+<button onclick="renderTrash()">
+🗑️ Papelera
 </button>
 
+<div id="trash"></div>
+
+<button onclick="exportExcel()" class="export">
+📊 Exportar Excel
+</button>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="app.js"></script>
 
 </body>
