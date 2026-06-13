@@ -151,6 +151,28 @@ alert(
 
 };
 }
+function exportExcel(){
+
+    const records =
+    getRecords();
+
+    const ws =
+    XLSX.utils.json_to_sheet(records);
+
+    const wb =
+    XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Glucosa"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "Control_Glucosa.xlsx"
+    );
+}
 function editRecord(index){
 
     const records = getRecords();
