@@ -1,0 +1,8 @@
+{
+"name":"Control Glucosa",
+"short_name":"Glucosa",
+"start_url":"./",
+"display":"standalone",
+"background_color":"#ffffff",
+"theme_color":"#007aff"
+}
