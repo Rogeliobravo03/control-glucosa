@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Control Glucosa</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Glucosa">
+</head>
+
+<body>
+
+<h1>Control de Glucosa</h1>
+
+<button onclick="voiceCapture()" class="voice">
+🎤 Registrar por voz
+</button>
+
+<div class="grid">
+
+<button onclick="saveType('Antes desayuno')">
+Antes desayuno
+</button>
+
+<button onclick="saveType('Después desayuno')">
+Después desayuno
+</button>
+
+<button onclick="saveType('Antes comida')">
+Antes comida
+</button>
+
+<button onclick="saveType('Después comida')">
+Después comida
+</button>
+
+<button onclick="saveType('Antes cena')">
+Antes cena
+</button>
+
+<button onclick="saveType('Después cena')">
+Después cena
+</button>
+
+</div>
+
+<h2>Historial</h2>
+
+<div id="records"></div>
+
+<button onclick="exportCSV()" class="export">
+Exportar CSV
+</button>
+
+<script src="app.js"></script>
+
+</body>
+</html>
