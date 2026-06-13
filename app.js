@@ -37,24 +37,54 @@ render();
 
 function render(){
 
-const records = getRecords();
+    const records = getRecords();
 
-const div =
-document.getElementById("records");
+    const div = document.getElementById("records");
 
-div.innerHTML="";
+    div.innerHTML = "";
 
-records.reverse().forEach(r=>{
+    [...records].reverse().forEach((r, reverseIndex) => {
 
-div.innerHTML += `
-<div class="record">
-<b>${r.type}</b><br>
-${r.value} mg/dL<br>
-${r.date}
-</div>
-`;
+        const realIndex = records.length - 1 - reverseIndex;
 
-});
+        div.innerHTML += `
+        <div class="record">
+
+            <b>${r.type}</b><br>
+            ${r.value} mg/dL<br>
+            ${r.date}
+
+            <div style="margin-top:10px;">
+                <button onclick="editRecord(${realIndex})">
+                    ✏️ Editar
+                </button>
+
+                <button onclick="deleteRecord(${realIndex})">
+                    🗑️ Eliminar
+                </button>
+            </div>
+
+        </div>
+        `;
+    });
+}
+function deleteRecord(index){
+
+    const records = getRecords();
+
+    const trash = getTrash();
+
+    trash.push(records[index]);
+
+    saveTrash(trash);
+
+    records.splice(index,1);
+
+    saveRecords(records);
+
+    render();
+
+    alert("Registro enviado a papelera");
 }
 
 function exportCSV(){
@@ -120,6 +150,103 @@ alert(
 );
 
 };
+}
+function editRecord(index){
+
+    const records = getRecords();
+
+    const current = records[index];
+
+    const newValue = prompt(
+        "Editar glucosa",
+        current.value
+    );
+
+    if(newValue === null){
+        return;
+    }
+
+    records[index].value = newValue;
+
+    saveRecords(records);
+
+    render();
+}
+
+function getTrash(){
+    return JSON.parse(
+        localStorage.getItem("glucoseTrash")
+        || "[]"
+    );
+}
+
+function saveTrash(trash){
+    localStorage.setItem(
+        "glucoseTrash",
+        JSON.stringify(trash)
+    );
+}
+function restoreRecord(index){
+
+    const trash = getTrash();
+
+    const records = getRecords();
+
+    records.push(trash[index]);
+
+    saveRecords(records);
+
+    trash.splice(index,1);
+
+    saveTrash(trash);
+
+    renderTrash();
+}
+
+function emptyTrash(){
+
+    if(
+        confirm(
+            "Eliminar definitivamente todos los registros?"
+        )
+    ){
+
+        localStorage.removeItem(
+            "glucoseTrash"
+        );
+
+        renderTrash();
+    }
+}
+
+function renderTrash(){
+
+    const trash =
+    getTrash();
+
+    const div =
+    document.getElementById("trash");
+
+    div.innerHTML = "<h2>Papelera</h2>";
+
+    trash.forEach((r,index)=>{
+
+        div.innerHTML += `
+        <div class="record">
+
+            ${r.type}<br>
+            ${r.value} mg/dL
+
+            <br><br>
+
+            <button
+                onclick="restoreRecord(${index})">
+                Restaurar
+            </button>
+
+        </div>
+        `;
+    });
 }
 
 render();
