@@ -120,36 +120,85 @@ a.click();
 
 function voiceCapture(){
 
-const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-if(!SpeechRecognition){
+    if(!SpeechRecognition){
+        alert("Reconocimiento de voz no soportado en este dispositivo.");
+        return;
+    }
 
-alert(
-"Tu navegador no soporta voz"
-);
+    const recognition = new SpeechRecognition();
 
-return;
-}
+    recognition.lang = "es-MX";
+    recognition.start();
 
-const recognition =
-new SpeechRecognition();
+    recognition.onresult = function(event){
 
-recognition.lang="es-MX";
+        const text =
+            event.results[0][0].transcript.toLowerCase();
 
-recognition.start();
+        console.log(text);
 
-recognition.onresult = function(event){
+        let value = text.match(/\d+/);
 
-const text =
-event.results[0][0].transcript;
+        if(!value){
+            alert("No pude detectar la glucosa.");
+            return;
+        }
 
-alert(
-"Escuchado: " + text
-);
+        value = parseInt(value[0]);
 
-};
+        let type = "";
+
+        if(text.includes("antes desayuno"))
+            type = "Antes desayuno";
+
+        else if(text.includes("después desayuno") || text.includes("despues desayuno"))
+            type = "Después desayuno";
+
+        else if(text.includes("antes comida"))
+            type = "Antes comida";
+
+        else if(text.includes("después comida") || text.includes("despues comida"))
+            type = "Después comida";
+
+        else if(text.includes("antes cena"))
+            type = "Antes cena";
+
+        else if(text.includes("después cena") || text.includes("despues cena"))
+            type = "Después cena";
+
+        if(type === ""){
+            alert(
+                "Di algo como: Antes desayuno 95"
+            );
+            return;
+        }
+
+        const records = getRecords();
+
+        records.push({
+            date: new Date().toLocaleString(),
+            type: type,
+            value: value
+        });
+
+        saveRecords(records);
+
+        render();
+
+        alert(
+            `Guardado: ${type} - ${value} mg/dL`
+        );
+    };
+
+    recognition.onerror = function(e){
+        alert(
+            "Error reconocimiento voz: " + e.error
+        );
+    };
 }
 function exportExcel(){
 
