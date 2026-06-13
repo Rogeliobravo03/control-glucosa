@@ -42,3 +42,11 @@ padding:10px;
 margin-top:10px;
 border-radius:10px;
 }
+
+.record button{
+    padding:10px;
+    margin-right:8px;
+    margin-top:5px;
+    font-size:16px;
+    border-radius:8px;
+}
